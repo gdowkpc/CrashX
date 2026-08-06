@@ -1,0 +1,41 @@
+CRASHX - PORTABLE WINDOWS APP
+
+START
+1. For the single-file release, copy the CrashX Windows Single executable to a
+   writable location. For the portable-folder release, extract the entire folder.
+2. Open the CrashX executable.
+3. Enter the crash and officer information.
+4. Add any number of vehicles and people. A person can have one or more roles:
+   driver, passenger, witness, pedestrian, or bicyclist.
+   Plate, plate-state, insurance-company, and policy-number entries automatically
+   format as uppercase.
+5. In Add person, select Scan license to read the PDF417 barcode with a connected
+   camera. Fill the dashed guide with the barcode, not the entire license, hold it
+   steady, and tilt the card slightly if there is glare. Review every filled field
+   before saving the person. Manual entry remains available when a license or camera
+   is unavailable.
+6. Use Associated vehicle when the person belongs with a vehicle.
+7. Select Save PDF and choose where the completed report should be written.
+
+NO INSTALLER OR ADMINISTRATOR RIGHTS
+The application does not install a service, write to Program Files, or request
+administrator elevation. The Windows Single release needs no helper files. Keep
+every file in the portable-folder release together.
+
+DISPOSABLE DATA
+The application does not create or update a case database. Entered crash,
+vehicle, and person information exists only in the running application. Closing
+the application or selecting Clear all discards that information. The PDF you
+explicitly save is the only retained work product.
+
+LICENSE SCANNING PRIVACY
+Camera frames and the raw driver-license barcode payload are not written to disk.
+Only mapped values placed in the open person form remain in memory for review.
+
+PDF CONTENT
+The report creates as many continuation pages as needed and appends the existing
+information/responsibilities page. Review the finished PDF before emailing it.
+
+SELF-TEST
+The packaged executable supports a non-interactive fictional-data self-test for
+release verification. Normal users do not need to run it.

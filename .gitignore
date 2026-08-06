@@ -1,0 +1,40 @@
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Generated application and release output
+build/
+dist/
+portable-dist/
+single-file-dist/
+release/
+output/
+tmp/
+*.spec
+*.zip
+*.sha256.txt
+portable_self_test*
+
+# Crash data and generated work products must never enter source control
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+*.pdf
+*.docx
+*.xlsx
+
+# Editor and operating-system noise
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.log

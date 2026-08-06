@@ -1,0 +1,35 @@
+name: Windows build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build:
+    runs-on: windows-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Build and verify standalone executable
+        shell: powershell
+        run: .\scripts\build_exchange_onefile_windows.ps1 -Clean
+
+      - name: Upload verified executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: CrashX-Windows-Single
+          path: |
+            release/CrashX-*-Windows-Single.exe
+            release/CrashX-*-Windows-Single.exe.sha256.txt
+          if-no-files-found: error
