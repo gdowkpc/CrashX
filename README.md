@@ -11,6 +11,12 @@ saves only the PDF selected by the officer.
 - Associate a person with a vehicle when applicable.
 - Scan AAMVA PDF417 driver-license barcodes from the Add Person dialog.
 - Map name, address, license number, and issuing state into reviewable fields.
+- Scan Oregon vehicle registrations from the Add Vehicle dialog using local
+  Windows OCR, automatic orientation correction, and state auto-detection.
+- Try structured QR, Data Matrix, and PDF417 registration payloads before OCR;
+  opaque identifiers are ignored rather than treated as vehicle data.
+- Provide Oregon and Washington state selection as an override when automatic
+  registration-state detection is uncertain.
 - Exclude date of birth because it is not published on the exchange form.
 - Automatically capitalize plate, plate-state, insurance-company, and
   policy-number entries.
@@ -19,10 +25,11 @@ saves only the PDF selected by the officer.
 
 ## Privacy model
 
-CrashX does not create a case database. Camera frames and raw barcode payloads
-are not written to disk. Closing the application or selecting **Clear all**
-discards the entered data. The PDF explicitly saved by the officer is the only
-retained work product.
+CrashX does not create a case database. Camera frames, raw barcode payloads,
+and raw registration OCR text are not written to disk. Registration scanning
+returns only supported vehicle fields and ignores owner/address information.
+Closing the application or selecting **Clear all** discards the entered data.
+The PDF explicitly saved by the officer is the only retained work product.
 
 Review every scanned field and the completed PDF before distributing it.
 

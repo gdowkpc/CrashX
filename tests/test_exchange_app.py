@@ -23,6 +23,7 @@ from crashx.models import (
     Person,
     Vehicle,
 )
+from crashx.registration_scan import ScannedVehicleData
 from crashx.ui.exchange_window import (
     ExchangeReportWindow,
     VehicleEditorDialog,
@@ -206,6 +207,36 @@ class ExchangeReportWindowTest(unittest.TestCase):
         self.assertEqual(vehicle.plate_state, "OR")
         self.assertEqual(vehicle.insurance_company, "EXAMPLE MUTUAL")
         self.assertEqual(vehicle.insurance_policy_number, "POL-2468X")
+        dialog.close()
+
+    def test_registration_scan_populates_only_returned_vehicle_fields(self) -> None:
+        dialog = VehicleEditorDialog()
+        dialog.insurance_company.setText("EXISTING INSURER")
+        dialog.color.setText("Existing color")
+
+        dialog.apply_scanned_registration(
+            ScannedVehicleData(
+                jurisdiction="OR",
+                year="2024",
+                make="EXAMPLE",
+                model="MODELX",
+                body_style="SD",
+                plate="TEST123",
+                plate_state="OR",
+                source="ocr",
+            )
+        )
+
+        self.assertEqual(dialog.year.text(), "2024")
+        self.assertEqual(dialog.make.text(), "EXAMPLE")
+        self.assertEqual(dialog.model.text(), "MODELX")
+        self.assertEqual(dialog.body_style.text(), "SD")
+        self.assertEqual(dialog.plate.text(), "TEST123")
+        self.assertEqual(dialog.plate_state.text(), "OR")
+        self.assertEqual(dialog.color.text(), "Existing color")
+        self.assertEqual(dialog.insurance_company.text(), "EXISTING INSURER")
+        self.assertTrue(dialog.scan_status.isVisibleTo(dialog))
+        self.assertIn("Review every field", dialog.scan_status.text())
         dialog.close()
 
     def test_clear_replaces_all_in_memory_state(self) -> None:
