@@ -461,7 +461,7 @@ class ExchangeReportWindow(QMainWindow):
     def __init__(self, draft: ExchangeReportDraft | None = None) -> None:
         super().__init__()
         self.draft = draft or ExchangeReportDraft.empty()
-        self.setWindowTitle("CrashX")
+        self.setWindowTitle("CrashX - Portland Police Bureau")
         self.resize(1050, 760)
         self.setMinimumSize(820, 580)
 
@@ -510,7 +510,7 @@ class ExchangeReportWindow(QMainWindow):
         return layout
 
     def _build_ui(self) -> None:
-        title = QLabel("CrashX")
+        title = QLabel("CrashX - Portland Police Bureau")
         title.setStyleSheet("font-size: 24px; font-weight: 700; color: #17324d;")
         subtitle = QLabel(
             "Create a PDF information-exchange report without creating a case file. "
