@@ -33,8 +33,10 @@ def _run_self_test() -> int:
             Vehicle,
         )
         from crashx.ui.license_scan_dialog import decode_license_frame
+        from crashx.windows_ocr import recognize_image
         from PySide6.QtCore import Qt
         from PySide6.QtGui import QImage, QPainter
+        from PIL import Image, ImageDraw, ImageFont
         import zxingcpp
 
         destination.mkdir(parents=True, exist_ok=True)
@@ -111,11 +113,39 @@ def _run_self_test() -> int:
             or scanned_license.license_state != "OR"
         ):
             raise OSError("The bundled AAMVA field mapper returned unexpected data.")
+
+        ocr_source = Image.new("L", (1600, 420), color=255)
+        ocr_draw = ImageDraw.Draw(ocr_source)
+        ocr_draw.text(
+            (50, 45),
+            "OREGON REGISTRATION",
+            font=ImageFont.load_default(size=72),
+            fill=0,
+        )
+        ocr_draw.text(
+            (50, 210),
+            "YEAR MAKE MODEL",
+            font=ImageFont.load_default(size=58),
+            fill=0,
+        )
+        ocr_test_image = QImage(
+            ocr_source.tobytes(),
+            ocr_source.width,
+            ocr_source.height,
+            ocr_source.width,
+            QImage.Format.Format_Grayscale8,
+        ).copy()
+        ocr_document = recognize_image(ocr_test_image)
+        ocr_text = " ".join(ocr_document.lines).upper()
+        if "OREGON" not in ocr_text or "REGISTRATION" not in ocr_text:
+            raise OSError("The bundled local Windows OCR engine failed its text check.")
         (destination / "portable_self_test.txt").write_text(
             "PASS\n\n"
             "The standalone executable generated a PDF and decoded fictional "
-            "AAMVA PDF417 data from a full-resolution camera-like frame. All test "
-            "records were disposable and no case database was created.\n",
+            "AAMVA PDF417 data from a full-resolution camera-like frame. It also "
+            "recognized fictional registration text with the bundled local Windows "
+            "OCR path. All test records were disposable and no case database was "
+            "created.\n",
             encoding="utf-8",
         )
         return 0

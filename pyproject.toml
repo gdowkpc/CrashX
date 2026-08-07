@@ -1,12 +1,20 @@
 [project]
 name = "crashx"
-version = "0.5.6"
+version = "0.6.2"
 description = "Disposable traffic crash information-exchange PDF application"
 requires-python = ">=3.11"
 dependencies = [
   "PySide6>=6.8,<7",
   "reportlab>=4.2,<5",
   "zxing-cpp>=3.1.1,<4",
+  "winrt-Windows.Foundation>=3.2.1,<4; platform_system == 'Windows'",
+  "winrt-Windows.Foundation.Collections>=3.2.1,<4; platform_system == 'Windows'",
+  "winrt-Windows.Globalization>=3.2.1,<4; platform_system == 'Windows'",
+  "winrt-Windows.Graphics.DirectX>=3.2.1,<4; platform_system == 'Windows'",
+  "winrt-Windows.Graphics.Imaging>=3.2.1,<4; platform_system == 'Windows'",
+  "winrt-Windows.Media.Ocr>=3.2.1,<4; platform_system == 'Windows'",
+  "winrt-Windows.Storage.Streams>=3.2.1,<4; platform_system == 'Windows'",
+  "winrt-Windows.System>=3.2.1,<4; platform_system == 'Windows'",
 ]
 
 [tool.pytest.ini_options]

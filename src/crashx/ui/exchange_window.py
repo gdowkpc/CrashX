@@ -39,7 +39,9 @@ from ..exchange_draft import (
 )
 from ..license_scan import ScannedLicenseData
 from ..models import DriverProfile, ParticipantDetails, Person, Vehicle
+from ..registration_scan import ScannedVehicleData
 from .license_scan_dialog import LicenseScanDialog
+from .registration_scan_dialog import RegistrationScanDialog
 
 
 def _line(placeholder: str = "") -> QLineEdit:
@@ -95,6 +97,30 @@ class VehicleEditorDialog(QDialog):
         self.policy_number = _uppercase_line()
         self.property_damage = _line("House, fence, sign, or other property")
 
+        self.scan_registration_button = QPushButton("Scan registration")
+        self.scan_registration_button.setStyleSheet(
+            "font-weight: 700; padding: 7px 16px; background: #176b87; color: white;"
+        )
+        self.scan_registration_button.setToolTip(
+            "Use the camera to read supported vehicle fields from a registration."
+        )
+        self.scan_registration_button.clicked.connect(self._scan_registration)
+        scan_explanation = QLabel(
+            "Auto-detect Oregon or Washington, or select the state in the scanner."
+        )
+        scan_explanation.setWordWrap(True)
+        scan_explanation.setStyleSheet("color: #4b5563;")
+        scan_row = QHBoxLayout()
+        scan_row.addWidget(self.scan_registration_button)
+        scan_row.addWidget(scan_explanation, 1)
+        self.scan_status = QLabel()
+        self.scan_status.setWordWrap(True)
+        self.scan_status.setStyleSheet(
+            "background: #ecfdf3; border: 1px solid #86c79a; border-radius: 4px; "
+            "padding: 7px; color: #174f2a;"
+        )
+        self.scan_status.hide()
+
         form = QFormLayout()
         form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
         form.addRow("Vehicle number", self.number)
@@ -118,6 +144,8 @@ class VehicleEditorDialog(QDialog):
 
         body = QWidget()
         body_layout = QVBoxLayout(body)
+        body_layout.addLayout(scan_row)
+        body_layout.addWidget(self.scan_status)
         body_layout.addLayout(form)
         body_layout.addWidget(buttons)
         scroll = QScrollArea()
@@ -144,6 +172,36 @@ class VehicleEditorDialog(QDialog):
         )
         for editor, value in values:
             editor.setText(value)
+
+    def _scan_registration(self) -> None:
+        dialog = RegistrationScanDialog(self)
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            return
+        if dialog.scanned_data is not None:
+            self.apply_scanned_registration(dialog.scanned_data)
+
+    def apply_scanned_registration(self, scanned: ScannedVehicleData) -> None:
+        values = (
+            (self.year, scanned.year),
+            (self.make, scanned.make),
+            (self.model, scanned.model),
+            (self.body_style, scanned.body_style),
+            (self.color, scanned.color),
+            (self.plate, scanned.plate),
+            (self.plate_state, scanned.plate_state),
+        )
+        for editor, value in values:
+            if value:
+                editor.setText(value)
+        fields = ", ".join(scanned.populated_fields)
+        message = (
+            f"Registration data filled from {scanned.source}: {fields}. "
+            "Review every field before saving the vehicle."
+        )
+        if scanned.warnings:
+            message += " " + " ".join(scanned.warnings)
+        self.scan_status.setText(message)
+        self.scan_status.show()
 
     def _accept_if_valid(self) -> None:
         identifying_values = (

@@ -14,8 +14,13 @@ START
    steady, and tilt the card slightly if there is glare. Review every filled field
    before saving the person. Manual entry remains available when a license or camera
    is unavailable.
-6. Use Associated vehicle when the person belongs with a vehicle.
-7. Select Save PDF and choose where the completed report should be written.
+6. In Add vehicle, select Scan registration to read supported 2D barcode fields
+   and locally OCR an Oregon registration. Auto-detect is the default; Oregon or
+   Washington can be selected manually when needed. Fill the guide with the
+   vehicle-information section, capture when the text is sharp, and review every
+   returned field before saving. Insurance information remains manual.
+7. Use Associated vehicle when the person belongs with a vehicle.
+8. Select Save PDF and choose where the completed report should be written.
 
 NO INSTALLER OR ADMINISTRATOR RIGHTS
 The application does not install a service, write to Program Files, or request
@@ -31,6 +36,11 @@ explicitly save is the only retained work product.
 LICENSE SCANNING PRIVACY
 Camera frames and the raw driver-license barcode payload are not written to disk.
 Only mapped values placed in the open person form remain in memory for review.
+
+REGISTRATION SCANNING PRIVACY
+Registration camera frames, barcode payloads, and raw OCR text are not written to
+disk. Owner and address information are not returned to the vehicle form. Only
+supported vehicle fields remain in memory for officer review.
 
 PDF CONTENT
 The report creates as many continuation pages as needed and appends the existing
