@@ -160,8 +160,11 @@ class ExchangeReportWindowTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             window = ExchangeReportWindow()
-            self.assertEqual(window.windowTitle(), "CrashX")
+            self.assertEqual(
+                window.windowTitle(), "CrashX - Portland Police Bureau"
+            )
             labels = {label.text() for label in window.findChildren(QLabel)}
+            self.assertIn("CrashX - Portland Police Bureau", labels)
             self.assertIn("Location of Crash", labels)
             self.assertNotIn("Road / location", labels)
             self.assertNotIn("Cross street / reference", labels)

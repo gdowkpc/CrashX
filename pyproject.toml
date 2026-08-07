@@ -1,6 +1,6 @@
 [project]
 name = "crashx"
-version = "0.6.2"
+version = "0.6.3"
 description = "Disposable traffic crash information-exchange PDF application"
 requires-python = ">=3.11"
 dependencies = [
